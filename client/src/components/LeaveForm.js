@@ -4,7 +4,8 @@ import '../stylesheets/navbar.css';
 import '../stylesheets/leave_form.css';
 function LeaveForm() {
 
-    const [StaffID, setStaffID] = useState('');
+    const [FirstName, setFirstName] = useState('');
+    const [LastName, setLastName] = useState('');
     const [StartDate, setStartDate] = useState('');
     const [EndDate, setEndDate] = useState('');
     const [Reason, setReason] = useState('');
@@ -19,7 +20,7 @@ function LeaveForm() {
     }, []);
 
     const sendRequest = () => {
-        Axios.post('http://localhost:3001/request', {StaffID: StaffID, StartDate: StartDate, EndDate: EndDate, Reason: Reason, Period: Period,
+        Axios.post('http://localhost:3001/request', {FirstName: FirstName, LastName: LastName, StartDate: StartDate, EndDate: EndDate, Reason: Reason, Period: Period,
         }).then(()=> {
             alert("Request sent");
         });
@@ -37,8 +38,11 @@ function LeaveForm() {
             <div className={"form"}>
                 <h1>Leave Form</h1>
 
-                <label htmlFor="StaffID">Staff ID</label>
-                <input type="text" id="StaffID" name="StaffID" placeholder="Staff ID" required onChange={(e) => {setStaffID(e.target.value)}} />
+                <label htmlFor="FirstName">First Name</label>
+                <input type="text" id="FirstName" name="FirstName" placeholder="First name" required onChange={(e) => {setFirstName(e.target.value)}} />
+
+                <label htmlFor="LastName">Last Name</label>
+                <input type="text" id="LastName" name="LastName" placeholder="Last name" required onChange={(e) => {setLastName(e.target.value)}} />
 
                 <label htmlFor="StartDate">Start date</label>
                 <input type="date" id="StartDate" name="StartDate" placeholder="Start Date" required onChange={(e) => {setStartDate(e.target.value)}} />
