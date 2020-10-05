@@ -8,8 +8,8 @@ router.post('/request', (req, res) => {
     if(req.body) {
         pool.getConnection()
             .then(conn => {
-                const values = [req.body.FirstName, req.body.LastName, req.body.StartDate, req.body.EndDate, req.body.Reason, req.body.Period];
-                conn.query('INSERT INTO Leaves (FirstName, LastName, StartDate, EndDate, Reason, Period) VALUES (?, ?, ?, ?, ?, ?)', values)
+                const values = [req.body.StaffID, req.body.StartDate, req.body.EndDate, req.body.Reason, req.body.Period];
+                conn.query('INSERT INTO requests (StaffID, StartDate, EndDate, Reason, Period) VALUES (?, ?, ?, ?, ?)', values)
                     .then((result) => {
                         console.log(result);
                         conn.end();
@@ -32,7 +32,7 @@ router.post('/request', (req, res) => {
 router.get('/view', (req, res) => {
     pool.getConnection()
         .then(conn => {
-            conn.query("SELECT FirstName, LastName, DATE_FORMAT(StartDate, '%Y/%m/%d') AS StartDate, DATE_FORMAT(EndDate, '%Y/%m/%d') AS EndDate, Reason, Period FROM Leaves")
+            conn.query("SELECT StaffID, DATE_FORMAT(StartDate, '%Y/%m/%d') AS StartDate, DATE_FORMAT(EndDate, '%Y/%m/%d') AS EndDate, Reason, Period FROM requests")
                 .then((result) => {
                     console.log(result);
                     conn.end();
