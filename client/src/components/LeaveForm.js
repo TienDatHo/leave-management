@@ -10,7 +10,6 @@ function LeaveForm() {
     const [Reason, setReason] = useState('');
     const [Period, setPeriod] = useState('');
 
-    const [LeaveView, setLeaveView] = useState([]);
 
     useEffect(() => {
         Axios.get('http://localhost:3001/view').then((response)=> {
@@ -28,9 +27,9 @@ function LeaveForm() {
     return (
         <div className="LeaveForm">
             <div className={"navbar"}>
-                <a href="#home">Home</a>
+                <a href="">Home</a>
                 <a href="http://localhost:3000">Leave form</a>
-                <a href="#page2">Page 2</a>
+                <a href="">Page 2</a>
                 <a href="http://localhost:3001/view">Check raw inputs</a>
             </div>
 
@@ -70,7 +69,7 @@ function LeaveForm() {
                     <option value="Period 4">Period 4</option>
                     <option value="Period 5">Period 5</option>
                 </select>
-                <button onClick={sendRequest}>Send Request</button>
+                <button type="submit" onClick={sendRequest}>Send Request</button>
             </div>
         </div>
     );

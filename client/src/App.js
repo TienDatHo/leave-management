@@ -1,11 +1,11 @@
 import React from 'react';
 import './App.css';
-import LeaveForm from "./components/LeaveForm";
+import RequestForm from "./components/RequestForm";
 
 const App = () => {
   return (
       <div className="App">
-        <LeaveForm />
+        <RequestForm />
       </div>
   );
 }
