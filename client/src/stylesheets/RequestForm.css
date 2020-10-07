@@ -4,7 +4,7 @@
     margin-top: 70px; /* Add a top margin to avoid content overlay */
 }
 /* Style inputs with type="text", select elements and textareas */
-input[type=text], input[type=date], select, textarea {
+input[type=text], input[type=date], input[type=checkbox], select, textarea {
     width: 100%; /* Full width */
     padding: 12px; /* Some padding */
     border: 1px solid #ccc; /* Gray border */

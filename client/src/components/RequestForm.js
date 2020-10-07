@@ -1,33 +1,26 @@
 import React, {Component} from "react";
 import Axios from 'axios';
-import '../stylesheets/navbar.css';
-import '../stylesheets/leave_form.css';
+import '../stylesheets/RequestForm.css';
 
 class RequestForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            formControls: {
-                StaffID: {
-                    value: ''
-                },
-                StartDate: {
-                    value: ''
-                },
-                EndDate: {
-                    value:''
-                },
-                Reason: {
-                    value: ''
-                },
-                Period: {
-                    value: ''
-                },
-            }
+            StaffID: '',
+            StartDate: '',
+            EndDate: '',
+            Morning: 'off',
+            Period1: 'off',
+            Period2: 'off',
+            Period3: 'off',
+            Period4: 'off',
+            Period5: 'off',
+            LeaveType: '',
+            Status: 'new',
         }
     };
 
-    changeHandler = event => {
+    changeHandler = (event) => {
         const target = event.target.name;
         const value = event.target.value;
 
@@ -37,13 +30,20 @@ class RequestForm extends Component {
     };
 
 
-    onSubmit = () => {
+    onSubmit = (event) => {
+        event.preventDefault();
         Axios.post('http://localhost:3001/request', {
             StaffID: this.state.StaffID,
             StartDate: this.state.StartDate,
             EndDate: this.state.EndDate,
-            Reason: this.state.Reason,
-            Period: this.state.Period,
+            Morning: this.state.Morning,
+            Period1: this.state.Period1,
+            Period2: this.state.Period2,
+            Period3: this.state.Period3,
+            Period4: this.state.Period4,
+            Period5: this.state.Period5,
+            LeaveType: this.state.LeaveType,
+            Status: this.state.Status,
         }).then(()=> {
             alert("Request sent");
         });
@@ -52,8 +52,7 @@ class RequestForm extends Component {
 
     render() {
         return (
-
-            <form>
+            <form onSubmit={this.onSubmit}>
 
                 <label>Staff ID</label>
                 <input type="text"
@@ -73,9 +72,9 @@ class RequestForm extends Component {
                        onChange={this.changeHandler}
                 />
 
-                <label>Reason</label>
-                <select name="Reason"
-                       onChange={this.changeHandler}
+                <label>Leave Type</label>
+                <select name="LeaveType"
+                        onChange={this.changeHandler}
                 >
                     <option value="PD">PD (approved)</option>
                     <option value="Excursion or Incursion">Excursion or Incursion</option>
@@ -88,19 +87,44 @@ class RequestForm extends Component {
                     <option value="Other">Other</option>
                 </select>
 
-                <label>Period</label>
-                <select name="Period"
+                <label>Morning</label>
+                <input type="checkbox"
+                       name="Morning"
                        onChange={this.changeHandler}
-                >
-                    <option value="All day">All day</option>
-                    <option value="Period 1">Period 1</option>
-                    <option value="Period 2">Period 2</option>
-                    <option value="Period 3">Period 3</option>
-                    <option value="Period 4">Period 4</option>
-                    <option value="Period 5">Period 5</option>
-                </select>
+                />
 
-                <button type="button" onClick={this.onSubmit}>Send Request</button>
+                <label>Period 1</label>
+                <input type="checkbox"
+                       name="Period1"
+                       onChange={this.changeHandler}
+                />
+
+                <label>Period 2</label>
+                <input type="checkbox"
+                       name="Period2"
+                       onChange={this.changeHandler}
+                />
+
+                <label>Period 3</label>
+                <input type="checkbox"
+                       name="Period3"
+                       onChange={this.changeHandler}
+                />
+
+                <label>Period 4</label>
+                <input type="checkbox"
+                       name="Period4"
+                       onChange={this.changeHandler}
+                />
+
+                <label>Period 5</label>
+                <input type="checkbox"
+                       name="Period5"
+                       onChange={this.changeHandler}
+                />
+
+
+                <input type="submit" value="Send Request"/>
             </form>
         )
     };
