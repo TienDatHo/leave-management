@@ -196,6 +196,7 @@ class RequestForm extends Component {
 
         handleSubmit = (event) => {
             event.preventDefault();
+            const errors = this.state.errors;
             this.setState({
                 formValid: this.state.valid.StaffID &&
                     this.state.valid.StartDate &&
@@ -228,7 +229,7 @@ class RequestForm extends Component {
                 });
             } else {
                 if (this.state.valid.LeaveType === false) {
-                    this.state.errors.LeaveType = "Error: Leave Type is required";
+                    errors.LeaveType = "Error: Leave Type is required";
                 } else {
                     alert("Error: Required fields are emptied or error");
                 }
