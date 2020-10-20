@@ -128,7 +128,7 @@ class RequestForm extends Component {
                 valid.Period5 = true;
                 break;
             case 'LeaveType':
-                if (value.length < 0) {
+                if (value.length < 1) {
                     errors.LeaveType = 'Error: Leave Type = null';
                     valid.LeaveType = false;
                 } else {
@@ -228,7 +228,7 @@ class RequestForm extends Component {
                 });
             } else {
                 if (this.state.valid.LeaveType === false) {
-                    alert("Error: Leave Type is required")
+                    this.state.errors.LeaveType = "Error: Leave Type is required";
                 } else {
                     alert("Error: Required fields are emptied or error");
                 }
@@ -279,6 +279,7 @@ class RequestForm extends Component {
                                 <option value="LWOP">LWOP</option>
                                 <option value="Other">Other</option>
                             </select>
+                            {errors.LeaveType.length > 0 && <span className='error'>{errors.LeaveType}</span>}
                         </div>
 
 
