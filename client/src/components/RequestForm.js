@@ -43,7 +43,6 @@ class RequestForm extends Component {
                 Period5: true,
                 LeaveType: false,
                 Status: true,
-                PD: false,
             },
             constraints: {
                 PD: false,
