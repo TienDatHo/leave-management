@@ -43,9 +43,12 @@ class RequestForm extends Component {
                 Period5: true,
                 LeaveType: false,
                 Status: true,
+                PD: false,
+            },
+            constraints: {
+                PD: false,
             },
             formValid: false,
-            checkedCounter: 0
         };
     };
 
@@ -56,12 +59,13 @@ class RequestForm extends Component {
         const {name, value} = event.target;
         const errors =  this.state.errors;
         const valid = this.state.valid;
+        const constraints = this.state.constraints;
         const today = new Date();
         const todayDateString = today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
         const todayDate = Date.parse(todayDateString);
         let startDate = '';
         let endDate = '';
-        //let startDay = '';
+        let dateDiff;
 
         switch (name) {
             case 'StaffID':
@@ -75,9 +79,7 @@ class RequestForm extends Component {
                 break;
             case 'StartDate':
                 startDate = Date.parse(value);
-                //startDay = new Date(value).getDay();
                 endDate = Date.parse(this.state.EndDate);
-
                 if (startDate < todayDate) {
                     if (startDate > endDate) {
                         errors.StartDate = 'Error: Start Date < Today Date && Start Date > End Date';
@@ -127,7 +129,7 @@ class RequestForm extends Component {
                 valid.Period5 = true;
                 break;
             case 'LeaveType':
-                if (value === null) {
+                if (value.length < 0) {
                     errors.LeaveType = 'Error: Leave Type = null';
                     valid.LeaveType = false;
                 } else {
@@ -143,51 +145,97 @@ class RequestForm extends Component {
                 break;
         }
 
-        this.setState({errors, [name]: value});
-        this.setState({
-            formValid: this.state.valid.StaffID &&
-                this.state.valid.StartDate &&
-                this.state.valid.EndDate &&
-                this.state.valid.Morning &&
-                this.state.valid.Period1 &&
-                this.state.valid.Period2 &&
-                this.state.valid.Period3 &&
-                this.state.valid.Period4 &&
-                this.state.valid.Period5 &&
-                this.state.valid.LeaveType &&
-                this.state.valid.Status
-        })
-    };
-
-    handleSubmit = (event) => {
-        event.preventDefault();
-        if(this.state.formValid === true) {
-            Axios.post('http://localhost:3001/request', {
-                StaffID: this.state.StaffID,
-                StartDate: this.state.StartDate,
-                EndDate: this.state.EndDate,
-                Morning: this.state.Morning,
-                Period1: this.state.Period1,
-                Period2: this.state.Period2,
-                Period3: this.state.Period3,
-                Period4: this.state.Period4,
-                Period5: this.state.Period5,
-                LeaveType: this.state.LeaveType,
-                Status: this.state.Status,
-            }).then(()=> {
-                alert("Status: Form is submitted. OK");
-            });
-        } else {
-            const valid = this.state.valid;
-
-            if (valid.LeaveType === false) {
-                alert("Error: Leave Type is required")
-            } else {
-                alert("Error: Required fields are emptied or error");
+        if (this.state.LeaveType === 'PD') {
+            dateDiff = (startDate - todayDate) / (24 * 3600 * 1000);
+            switch (new Date(todayDate).getDay()) {
+                case 1:
+                    if (dateDiff < 5) {
+                        errors.StartDate = 'Error: Must be apply 5 business days prior for Leave Type (PD)';
+                        valid.StartDate = false;
+                        constraints.PD = false;
+                    }
+                    else {
+                        errors.StartDate = '';
+                        valid.StartDate = true;
+                        constraints.PD = true;
+                    }
+                    break;
+                case 2 || 3 || 4 || 5 || 6:
+                    if (dateDiff < 7) {
+                        errors.StartDate = 'Error: Must be apply 5 business days prior for Leave Type (PD)';
+                        valid.StartDate = false;
+                        constraints.PD = false;
+                    }
+                    else {
+                        errors.StartDate = '';
+                        valid.StartDate = true;
+                        constraints.PD = true;
+                    }
+                    break;
+                case 7:
+                    if (dateDiff < 6) {
+                        errors.StartDate = 'Error: Must be apply 5 business days prior for Leave Type (PD)';
+                        valid.StartDate = false;
+                        constraints.PD = false;
+                    }
+                    else {
+                        errors.StartDate = '';
+                        valid.StartDate = true;
+                        constraints.PD = true;
+                    }
+                    break;
+                default:
+                    break;
             }
+        } else {
+            constraints.PD = true;
         }
 
+        this.setState({errors, [name]: value});
+
     };
+
+        handleSubmit = (event) => {
+            event.preventDefault();
+            this.setState({
+                formValid: this.state.valid.StaffID &&
+                    this.state.valid.StartDate &&
+                    this.state.valid.EndDate &&
+                    this.state.valid.Morning &&
+                    this.state.valid.Period1 &&
+                    this.state.valid.Period2 &&
+                    this.state.valid.Period3 &&
+                    this.state.valid.Period4 &&
+                    this.state.valid.Period5 &&
+                    this.state.valid.LeaveType &&
+                    this.state.valid.Status &&
+                    this.state.constraints.PD
+            })
+            if(this.state.formValid === true) {
+                Axios.post('http://localhost:3001/request', {
+                    StaffID: this.state.StaffID,
+                    StartDate: this.state.StartDate,
+                    EndDate: this.state.EndDate,
+                    Morning: this.state.Morning,
+                    Period1: this.state.Period1,
+                    Period2: this.state.Period2,
+                    Period3: this.state.Period3,
+                    Period4: this.state.Period4,
+                    Period5: this.state.Period5,
+                    LeaveType: this.state.LeaveType,
+                    Status: this.state.Status,
+                }).then(()=> {
+                    alert("Status: Form is submitted. OK");
+                });
+            } else {
+                if (this.state.valid.LeaveType === false) {
+                    alert("Error: Leave Type is required")
+                } else {
+                    alert("Error: Required fields are emptied or error");
+                }
+            }
+
+        };
 
 
     render() {
