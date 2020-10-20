@@ -69,7 +69,7 @@ class RequestForm extends Component {
         switch (name) {
             case 'StaffID':
                 if (value.length < 8) {
-                    errors.StaffID = 'Error: Incorrect StaffID';
+                    errors.StaffID = 'Error: Incorrect Staff ID';
                     valid.StaffID = false;
                 } else {
                     errors.StaffID = '';
@@ -149,7 +149,7 @@ class RequestForm extends Component {
             switch (new Date(todayDate).getDay()) {
                 case 1:
                     if (dateDiff < 5) {
-                        errors.StartDate = 'Error: Must be apply 5 business days prior for Leave Type (PD)';
+                        errors.StartDate = 'Error: Can only be applied 5 business days prior for Leave Type (PD)';
                         valid.StartDate = false;
                         constraints.PD = false;
                     }
@@ -161,7 +161,7 @@ class RequestForm extends Component {
                     break;
                 case 2 || 3 || 4 || 5 || 6:
                     if (dateDiff < 7) {
-                        errors.StartDate = 'Error: Must be apply 5 business days prior for Leave Type (PD)';
+                        errors.StartDate = 'Error: Can only be applied 5 business days prior for Leave Type (PD)';
                         valid.StartDate = false;
                         constraints.PD = false;
                     }
@@ -173,7 +173,7 @@ class RequestForm extends Component {
                     break;
                 case 7:
                     if (dateDiff < 6) {
-                        errors.StartDate = 'Error: Must be apply 5 business days prior for Leave Type (PD)';
+                        errors.StartDate = 'Error: Can only be applied 5 business days prior for Leave Type (PD)';
                         valid.StartDate = false;
                         constraints.PD = false;
                     }
